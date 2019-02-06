@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EMU</title>
+        <meta charset="utf-8" />
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+        <script src="screen.js" type="text/javascript"></script>
+        <style type="text/css">
+            table { background-color: #999; margin: 0; padding: 0;}
+            table tr { height: 3px; margin: 0; padding: 0; }
+            table tr td { width: 4px; height: 3px; margin: 0; padding: 0;}
+            table tr td:hover { background-color: white; }
+            .p { background-color: red; }
+        </style>
+    </head>
+    <body>
+        <div id="screen">
+
+        </div>
+        <script type="text/javascript">
+
+
+            var mainscreen = new Screen();
+ 
+            mainscreen.init($('#screen'));
+
+            var totalPixels = 0; totalTime = 0;
+            var actualPixels = 0;
+            var actualSpeed = false;
+            var averageSpeed = false;
+
+            var x = 0; y=0; xd = 1; yd = 1;
+            setInterval(function() {
+                mainscreen.set(x,y,'#aabbcc');
+                x+=xd;
+                y+=yd;
+                totalPixels++;
+                actualPixels++;
+                if (x >= mainscreen.width || x < 0) xd=-xd;
+                if (y >= mainscreen.height || y < 0) yd=-yd;
+            },1);
+
+            var interval = 1000;
+            setInterval(function() {
+                totalTime+=interval;
+                actualSpeed = actualPixels / (interval / interval);
+                averageSpeed = totalPixels / (totalTime / interval);
+                actualPixels = 0;
+
+                $('#txt_avg').html(averageSpeed + " px/sec");
+                $('#txt_act').html(actualSpeed + " px/sec")
+
+            }, interval);
+        </script>
+        <div>
+            <ul>
+                <li>actual speed: <span id="txt_act"></span></li>
+                <li>average speed: <span id="txt_avg"></span></li>
+            </ul>
+        </div>
+    </body>
+</html>
